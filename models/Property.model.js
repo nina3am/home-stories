@@ -6,6 +6,7 @@ const propertySchema = new Schema(
     title: String,
     description: String,
     image: String,
+    acquisitionDate: String,
     type: {
       type: String,
       enum: [
@@ -23,24 +24,34 @@ const propertySchema = new Schema(
         "avion",
       ],
     },
-    owner: [
-      {
-        userId: [{ type: Schema.Types.ObjectId, ref: "User" }],
-        role: { type: String, enum: ["owner", "member"] },
-      },
-    ],
-    moments: [
-      {
-        name: String,
-        description: String,
-        images: String,
-        documents: String,
-        timestamps: {
-          createdAt: Number,
-          updatedAt: Number,
-        },
-      },
-    ],
+    moments: [{ type: Schema.Types.ObjectId, ref: "Moment" }],
+    // moments: [
+    //   {
+    //     name: String,
+    //     description: String,
+    //     images: [String],
+    //     categories: [
+    //       {
+    //         category: { type: String, enum: ["piece", "bâtiment", "éléments"] },
+    //         name: { type: String, enum: ["chambre", "SDB", "Salon"] },
+    //         taille: String,
+    //         photos: [String],
+    //       },
+    //     ],
+    //     types: [
+    //       {
+    //         type: { type: String, enum: ["travaux", "aménagement", "achat"] },
+    //         price: String,
+    //         timeSpent: String,
+    //         documents: [String],
+    //       },
+    //     ],
+    //     timestamps: {
+    //       createdAt: Number,
+    //       updatedAt: Number,
+    //     },
+    //   },
+    // ],
   },
   {
     timestamps: true,

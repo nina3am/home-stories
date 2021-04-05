@@ -61,7 +61,6 @@ authRoutes.post("/signup", (req, res, next) => {
 // POST LOGIN
 authRoutes.post("/login", (req, res, next) => {
   const { email, password } = req.body;
-  console.log({ email, password });
   User.findOne({ email })
     .then((user) => {
       if (!user) {
@@ -75,11 +74,32 @@ authRoutes.post("/login", (req, res, next) => {
         return next(new Error("Wrong credentials"));
       } else {
         req.session.user = user;
+        console.log(req.session.user);
         //res.json(user);
         res.status(200).json(user);
       }
     })
     .catch(next);
+});
+
+// POST LOGOUT
+authRoutes.post("/logout", (req, res, next) => {
+  req.session.destroy();
+  res.json({ message: "You're now logged out." });
+});
+
+// GET LOGGEDIN
+authRoutes.get("/loggedin", (req, res, next) => {
+  // req.isAuthenticated() is defined by passport
+  if (!req.session.user) {
+    return res.status(403).json({ message: "Unauthorized" });
+  }
+
+  User.findById(req.session.user._id)
+    .then((user) => {
+      res.json(user);
+    })
+    .catch((err) => res.status(500).json({ message: "erreurr inconnue" }));
 });
 
 module.exports = authRoutes;

@@ -8,6 +8,7 @@ const userSchema = new Schema(
     email: { type: String, required: [true, "Email is required."] },
     password: { type: String, required: [true, "Password is required."] },
     avatar: String,
+    properties: [{ type: Schema.Types.ObjectId, ref: "Property" }],
   },
   {
     timestamps: true,

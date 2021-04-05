@@ -8,7 +8,7 @@ const hbs = require("hbs");
 const mongoose = require("mongoose");
 const logger = require("morgan");
 const path = require("path");
-//const cors = require("cors");
+const cors = require("cors");
 const session = require("express-session");
 const MongoStore = require("connect-mongo").default;
 
@@ -17,6 +17,7 @@ mongoose
     useCreateIndex: true,
     useNewUrlParser: true,
     useUnifiedTopology: true,
+    useFindAndModify: false,
   })
   .then((x) => {
     console.log(
@@ -33,6 +34,14 @@ const debug = require("debug")(
 );
 
 const app = express();
+
+// CORS
+app.use(
+  cors({
+    credentials: true,
+    origin: ["http://localhost:3000"], // <== this will be the URL of our React app (it will be running on port 3000), we can add other port like an array, or a "*" to open to all ports
+  })
+);
 
 //Session
 app.use(
@@ -76,5 +85,8 @@ app.use("/", index);
 
 // Routers
 app.use("/auth", require("./routes/auth.routes"));
+app.use("/user", require("./routes/user.routes"));
+app.use("/property", require("./routes/property.routes"));
+app.use("/moment", require("./routes/moment.routes"));
 
 module.exports = app;
