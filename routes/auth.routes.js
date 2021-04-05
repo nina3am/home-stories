@@ -96,6 +96,7 @@ authRoutes.get("/loggedin", (req, res, next) => {
   }
 
   User.findById(req.session.user._id)
+    .populate("properties")
     .then((user) => {
       res.json(user);
     })
